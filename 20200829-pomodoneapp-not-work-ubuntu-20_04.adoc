@@ -1,0 +1,30 @@
+PomoDoneApp does not work on Ubuntu 20.04
+=======
+:tags: ubuntu,pomodoneapp
+:reference: https://github.com/jcfergus/fixed-it-for-me#pomodone-ubuntu-2004
+
+# Error
+
+```
+libtrace3/focal 3.0.21-1ubuntu3 amd64
+(pomodoneapp:38254): Pango-ERROR **: 08:34:06.746: Harfbuzz version too old (1.4.2)
+libtracker-control-2.0-dev/focal 2.3.4-1 amd64
+Trace/breakpoint trap (core dumped)
+```
+
+Fixed with:
+
+```
+wget http://mirrors.kernel.org/ubuntu/pool/main/p/pango1.0/libpango-1.0-0_1.42.4-7_amd64.deb
+wget http://mirrors.kernel.org/ubuntu/pool/main/p/pango1.0/libpangocairo-1.0-0_1.42.4-7_amd64.deb
+wget http://mirrors.kernel.org/ubuntu/pool/main/p/pango1.0/libpangoft2-1.0-0_1.42.4-7_amd64.deb
+cd /opt/PomoDoneApp
+sudo dpkg -x libpango-1.0-0_1.42.4-7_amd64.deb .
+sudo dpkg -x libpangocairo-1.0-0_1.42.4-7_amd64.deb .
+sudo dpkg -x libpangoft2-1.0-0_1.42.4-7_amd64.deb .
+LD_LIBRARY_PATH=/opt/PomoDoneApp/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH ./pomodoneapp
+```
+
+Update `/usr/share/applications/pomodoneapp.desktop` to include the LD_LIBRARY_PATH.
+
+`Exec=env LD_LIBRARY_PATH=/opt/PomoDoneApp/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH "/opt/PomoDoneApp/pomodoneapp" %U`
