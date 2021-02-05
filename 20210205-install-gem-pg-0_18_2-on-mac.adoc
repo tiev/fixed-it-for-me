@@ -1,0 +1,31 @@
+Errors installing gem `pg` on new MacOS
+=======================================
+:tags: mac,gem
+
+== Error
+
+Can't find libpq-fe.h
+
+== Fixed with:
+
+```
+brew install postgres
+```
+
+or
+
+```
+brew link postgres
+```
+
+== Error
+
+error: implicit declaration of function 'gettimeofday' is invalid in C99
+
+== Fixed with:
+
+```
+gem install pg -v '0.18.1' -- --with-cflags="-Wno-error=implicit-function-declaration"
+```
+
+NOTE: same thing happens with `puma`, `rbtrace`
